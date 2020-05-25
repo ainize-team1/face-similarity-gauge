@@ -1,0 +1,8 @@
+{
+  "short_name": "Face API",
+  "name": "Face recognition API",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff"
+}
