@@ -26,10 +26,11 @@ const UploaderWrapper = styled.div`
 `;
 
 const HelloText = styled.text`
-    margin-top: 16px;
-    margin-bottom: 16px;
-    font-weight: normal;
-    font-size: 25px;
+    margin-top: 53px;
+    font-family: IBM Plex Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
     line-height: 21px;
     text-align: center;
     letter-spacing: 0.15px;
@@ -54,9 +55,8 @@ class AppPage extends React.Component {
                               image={this.state.images[1]}/>
                 </UploaderWrapper>
 
-
                 <HelloText>
-                    {'Hello worldsssss!'}
+                    {'Face similarity gauge'}
                 </HelloText>
             </Wrapper>
         );
