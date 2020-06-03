@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Uploader from '../ui/Uploader';
+import GaugeChart from 'react-gauge-chart';
 
 const Wrapper = styled.div`
     display: flex;
@@ -23,6 +24,13 @@ const UploaderWrapper = styled.div`
     width: 100%;
     flex-direction: row;
     background: #F2F2F2;
+`;
+
+const GaugeWrapper = styled.div`
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    margin-top: 40px;
 `;
 
 const HelloText = styled.text`
@@ -58,6 +66,10 @@ class AppPage extends React.Component {
                 <HelloText>
                     {'Face similarity gauge'}
                 </HelloText>
+
+                <GaugeWrapper>
+                    <GaugeChart id="gauge-chart1" />
+                </GaugeWrapper>
             </Wrapper>
         );
     }
