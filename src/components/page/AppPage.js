@@ -22,7 +22,7 @@ const UploaderWrapper = styled.div`
     display: flex;
     width: 100%;
     flex-direction: row;
-    background: #F2F2F2;
+    background: #FFFFFF;
 `;
 
 const HelloText = styled.text`
@@ -40,7 +40,7 @@ class AppPage extends React.Component {
         super();
 
         this.state = {
-            images: [null, null],
+            imgList: [null, null],
         };
     }
 
@@ -49,11 +49,14 @@ class AppPage extends React.Component {
             <Wrapper>
                 <UploaderWrapper>
                     <Uploader background='#2D9CDB' emoji='😜‍'
-                              image={this.state.images[0]}/>
+                              imageIndex={0}
+                              image={this.state.imgList[0]}
+                              onChangeImage={this.onChangeImage}/>
                     <Uploader background='#6FCF97' emoji='😜‍'
-                              image={this.state.images[1]}/>
+                              imageIndex={1}
+                              image={this.state.imgList[1]}
+                              onChangeImage={this.onChangeImage}/>
                 </UploaderWrapper>
-
 
                 <HelloText>
                     {'Hello worldsssss!'}
@@ -61,6 +64,11 @@ class AppPage extends React.Component {
             </Wrapper>
         );
     }
+
+    onChangeImage = (img, index) => {
+        this.state.imgList[index] = img;
+        this.setState({});
+    };
 }
 
 export default AppPage;
