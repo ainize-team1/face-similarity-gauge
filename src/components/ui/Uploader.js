@@ -5,6 +5,9 @@ const Wrapper = styled.div`
     width: 50%;
     height: 242px;
     background: ${props => props.background || '#FFFFFF'};
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
 `;
 
 const Emoji = styled.div`
@@ -29,22 +32,41 @@ class Uploader extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {};
+        this.state = {
+            test: 'd',
+        };
     }
 
     render() {
         return (
-            <Wrapper background={this.props.background}>
-                <Emoji>
-                    {this.props.emoji}
-                </Emoji>
-                <Description>
-                    Upload
-                </Description>
+            <Wrapper onClick={this.triggerInputFile}
+                     background={this.props.image
+                         ? `url(${this.props.image})`
+                         : this.props.background}>
+                {this.props.image !== null ||
+                (<div>
+                    <Emoji>
+                        {this.props.emoji}
+                    </Emoji>
+                    <Description>
+                        Upload({this.state.test})
+                    </Description>
+                </div>)
+                }
+
+                <input
+                    style={{visibility: 'hidden'}}
+                    ref={fileInput => this.fileInput = fileInput}
+                    type="file"
+                    onChange={(e) => this.props.onChangeImage(
+                        URL.createObjectURL(e.target.files[0]),
+                        this.props.imageIndex)}
+                    accept=".jpg, .jpeg, .png"/>
             </Wrapper>
         );
     }
 
+    triggerInputFile = () => this.fileInput.click();
 }
 
 export default Uploader;
