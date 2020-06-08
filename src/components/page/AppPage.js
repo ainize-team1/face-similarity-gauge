@@ -37,6 +37,22 @@ const HelloText = styled.text`
     letter-spacing: 0.15px;
 `;
 
+const GaugeButton = styled.button`
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 31px;
+    text-align: center;
+    color: #FFFFFF;
+    width: 339px;
+    height: 55px;
+    border: 0;
+    background: #9B51E0;
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+`;
+
 class AppPage extends React.Component {
     constructor() {
         super();
@@ -72,6 +88,10 @@ class AppPage extends React.Component {
                 <HelloText>
                     {'Hello worldsssss!'}
                 </HelloText>
+
+                <GaugeButton>
+                    Gauge!
+                </GaugeButton>
             </Wrapper>
         );
     }
