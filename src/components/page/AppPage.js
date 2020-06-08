@@ -60,19 +60,24 @@ class AppPage extends React.Component {
         this.state = {
             imgList: [null, null],
             modelReady: false,
-            test: 'a',
+            gauging: false,
+            result: null,
         };
 
-        this.loadModel()
-            .then(_ => {
+        this.loadModel().then(_ => {
             this.setState({modelReady: true});
-        }).catch(console.error);
+        });
     }
 
     render() {
         return (
             <Wrapper>
-                {this.state.modelReady===false ? <Spinner message="Models are being loaded..."/> : ""}
+                {
+                    this.state.modelReady === false ? <Spinner message="Models are being loaded..."/> : ''
+                }
+                {
+                    this.state.gauging === true ? <Spinner message="Gauging..."/> : ''
+                }
 
                 <UploaderWrapper>
                     <Uploader background='#2D9CDB' emoji='😜‍'
@@ -87,14 +92,33 @@ class AppPage extends React.Component {
 
                 <HelloText>
                     {'Hello worldsssss!'}
+                    <br/>
+                    {'Result:'}{JSON.stringify(this.state.result)}
                 </HelloText>
 
-                <GaugeButton>
+                <GaugeButton onClick={() => this.onClickGauge()}>
                     Gauge!
                 </GaugeButton>
             </Wrapper>
         );
     }
+
+    onClickGauge = async () => {
+        this.setState({gauging: true});
+        const inputs = [undefined, undefined];
+        const descriptors = [undefined, undefined];
+
+        for (let i=0; i<2; i++) {
+            inputs[i] = await faceApi.fetchImage(this.state.imgList[i]);
+            descriptors[i] = await faceApi.computeFaceDescriptor(inputs[i]);
+        }
+
+        const distance = faceApi.euclideanDistance(descriptors[0], descriptors[1]);
+
+        console.log(JSON.stringify(descriptors[0]));
+        this.setState({result: distance});
+        this.setState({gauging: false});
+    };
 
     onChangeImage = (img, index) => {
         this.state.imgList[index] = img;
@@ -103,7 +127,7 @@ class AppPage extends React.Component {
 
     loadModel = async () => {
         await faceApi.loadFaceRecognitionModel('/models');
-    }
+    };
 }
 
 export default AppPage;
