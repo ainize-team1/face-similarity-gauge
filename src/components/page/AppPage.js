@@ -72,7 +72,7 @@ class AppPage extends React.Component {
     render() {
         return (
             <Wrapper>
-                {this.state.modelReady===false ? <Spinner/> : ""}
+                {this.state.modelReady===false ? <Spinner message="Models are being loaded..."/> : ""}
 
                 <UploaderWrapper>
                     <Uploader background='#2D9CDB' emoji='😜‍'

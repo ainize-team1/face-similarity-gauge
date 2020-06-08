@@ -21,8 +21,8 @@ const LoadingText = styled.div`
 `;
 
 class Spinner extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {};
     }
@@ -36,7 +36,7 @@ class Spinner extends React.Component {
                               width={80}/>
 
                 <LoadingText>
-                    {'Models are being loaded...'}
+                    {this.props.message}
                 </LoadingText>
             </Wrapper>
         );
