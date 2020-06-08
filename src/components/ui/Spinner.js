@@ -6,12 +6,13 @@ const Wrapper = styled.div`
     display: flex;
     align-items: center;
     flex-direction: column;
-    margin-bottom: 16px;
+    position: fixed;
+    top: 30%;
 `;
 
 const StyledLoader = styled(Loader)`
-    margin-bottom: 5px;
-`
+    align-self: center;
+`;
 
 const LoadingText = styled.div`
     text-align: center;
@@ -23,23 +24,23 @@ class Spinner extends React.Component {
     constructor() {
         super();
 
-        this.state = {
-        };
+        this.state = {};
     }
 
     render() {
-        return(
+        return (
             <Wrapper>
                 <StyledLoader type='TailSpin'
                               color='#FFFFFF'
                               height={80}
-                              width={80} />
+                              width={80}/>
 
                 <LoadingText>
-                    {'Cats are overwhelming. . .'}
+                    {'Models are being loaded...'}
                 </LoadingText>
             </Wrapper>
-        )
+        );
     }
 }
+
 export default Spinner;

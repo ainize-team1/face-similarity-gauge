@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import Uploader from '../ui/Uploader';
+import * as faceApi from 'face-api.js';
+import Spinner from './../ui/Spinner';
 
 const Wrapper = styled.div`
     display: flex;
@@ -41,12 +43,21 @@ class AppPage extends React.Component {
 
         this.state = {
             imgList: [null, null],
+            modelReady: false,
+            test: 'a',
         };
+
+        this.loadModel()
+            .then(_ => {
+            this.setState({modelReady: true});
+        }).catch(console.error);
     }
 
     render() {
         return (
             <Wrapper>
+                {this.state.modelReady===false ? <Spinner/> : ""}
+
                 <UploaderWrapper>
                     <Uploader background='#2D9CDB' emoji='😜‍'
                               imageIndex={0}
@@ -69,6 +80,10 @@ class AppPage extends React.Component {
         this.state.imgList[index] = img;
         this.setState({});
     };
+
+    loadModel = async () => {
+        await faceApi.loadFaceRecognitionModel('/models');
+    }
 }
 
 export default AppPage;
