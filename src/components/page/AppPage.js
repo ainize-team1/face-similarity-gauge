@@ -44,6 +44,25 @@ const HelloText = styled.text`
     letter-spacing: 0.15px;
 `;
 
+const ButtonWrapper = styled.div`
+    text-align: center;
+    margin-top: 32px;
+`;
+
+const GaugeButton = styled.button`
+    width: 339px;
+    height: 55px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    family: IBM Plex Mono;
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    background-color: #9b51e0;
+`;
+
 class AppPage extends React.Component {
     constructor() {
         super();
@@ -51,6 +70,9 @@ class AppPage extends React.Component {
         this.state = {
             images: [null, null],
         };
+    }
+
+    onButtonClick = () => {
     }
 
     render() {
@@ -70,6 +92,14 @@ class AppPage extends React.Component {
                 <GaugeWrapper>
                     <GaugeChart id="gauge-chart1" />
                 </GaugeWrapper>
+
+                <ButtonWrapper>
+                    <GaugeButton
+                        key={'gauge'}
+                        onClick={() => this.onButtonClick()}>
+                        {'Gauge!'}
+                    </GaugeButton>
+                </ButtonWrapper>
             </Wrapper>
         );
     }
