@@ -33,7 +33,6 @@ class Uploader extends React.Component {
         super(props);
 
         this.state = {
-            test: 'd',
         };
     }
 
@@ -49,7 +48,7 @@ class Uploader extends React.Component {
                         {this.props.emoji}
                     </Emoji>
                     <Description>
-                        Upload({this.state.test})
+                        Upload
                     </Description>
                 </div>)
                 }
