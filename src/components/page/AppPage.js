@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Uploader from '../ui/Uploader';
+import GaugeChart from 'react-gauge-chart';
 import * as faceApi from 'face-api.js';
 import Spinner from './../ui/Spinner';
 
@@ -27,11 +28,19 @@ const UploaderWrapper = styled.div`
     background: #FFFFFF;
 `;
 
+const GaugeWrapper = styled.div`
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    margin-top: 40px;
+`;
+
 const HelloText = styled.text`
-    margin-top: 16px;
-    margin-bottom: 16px;
-    font-weight: normal;
-    font-size: 25px;
+    margin-top: 53px;
+    font-family: IBM Plex Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
     line-height: 21px;
     text-align: center;
     letter-spacing: 0.15px;
@@ -111,14 +120,21 @@ class AppPage extends React.Component {
                 </UploaderWrapper>
 
                 <HelloText>
-                    {'Hello worldsssss!'}
-                    <br/>
-                    {'Result:'}{JSON.stringify(this.state.result)}
+                    {'Face similarity gauge'}
                 </HelloText>
+
+                <GaugeWrapper>
+                    <GaugeChart id="gauge-chart1"
+                                percent={0.5}
+                                nrOfLevels={20}
+                                textColor={'#9B51E0'}
+                                colors={['#AAAAAA', '#9B51E0']} />
+                </GaugeWrapper>
 
                 <GaugeButton onClick={() => this.onClickGauge()}>
                     Gauge!
                 </GaugeButton>
+
                 {
                     this.state.modelReady === false
                         ? <Spinner message="Models are being loaded..."/> : ''
