@@ -65,20 +65,40 @@ class AppPage extends React.Component {
         };
 
         this.loadModel().then(_ => {
-            this.setState({modelReady: true});
+            this.setState({ modelReady: true });
         });
     }
+
+    loadModel = async () => {
+        await faceApi.loadFaceRecognitionModel('/models');
+    };
+
+    onClickGauge = async () => {
+        this.setState({ gauging: true });
+        const inputs = [undefined, undefined];
+        const descriptors = [undefined, undefined];
+
+        for (let i = 0; i < 2; i++) {
+            inputs[i] = await faceApi.fetchImage(this.state.imgList[i]);
+            descriptors[i] = await faceApi.computeFaceDescriptor(inputs[i]);
+        }
+
+        const distance = faceApi.euclideanDistance(descriptors[0],
+            descriptors[1]);
+
+        console.log(JSON.stringify(descriptors[0]));
+        this.setState({ result: distance });
+        this.setState({ gauging: false });
+    };
+
+    onChangeImage = (img, index) => {
+        this.state.imgList[index] = img;
+        this.setState({});
+    };
 
     render() {
         return (
             <Wrapper>
-                {
-                    this.state.modelReady === false ? <Spinner message="Models are being loaded..."/> : ''
-                }
-                {
-                    this.state.gauging === true ? <Spinner message="Gauging..."/> : ''
-                }
-
                 <UploaderWrapper>
                     <Uploader background='#2D9CDB' emoji='😜‍'
                               imageIndex={0}
@@ -99,35 +119,18 @@ class AppPage extends React.Component {
                 <GaugeButton onClick={() => this.onClickGauge()}>
                     Gauge!
                 </GaugeButton>
+                {
+                    this.state.modelReady === false
+                        ? <Spinner message="Models are being loaded..."/> : ''
+                }
+                {
+                    this.state.gauging === true
+                        ? <Spinner message="Gauging..."/> : ''
+                }
             </Wrapper>
         );
     }
 
-    onClickGauge = async () => {
-        this.setState({gauging: true});
-        const inputs = [undefined, undefined];
-        const descriptors = [undefined, undefined];
-
-        for (let i=0; i<2; i++) {
-            inputs[i] = await faceApi.fetchImage(this.state.imgList[i]);
-            descriptors[i] = await faceApi.computeFaceDescriptor(inputs[i]);
-        }
-
-        const distance = faceApi.euclideanDistance(descriptors[0], descriptors[1]);
-
-        console.log(JSON.stringify(descriptors[0]));
-        this.setState({result: distance});
-        this.setState({gauging: false});
-    };
-
-    onChangeImage = (img, index) => {
-        this.state.imgList[index] = img;
-        this.setState({});
-    };
-
-    loadModel = async () => {
-        await faceApi.loadFaceRecognitionModel('/models');
-    };
 }
 
 export default AppPage;
