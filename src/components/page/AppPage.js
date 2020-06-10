@@ -4,6 +4,7 @@ import Uploader from '../ui/Uploader';
 import GaugeChart from 'react-gauge-chart';
 import * as faceApi from 'face-api.js';
 import Spinner from './../ui/Spinner';
+import Footer from './../ui/Footer';
 
 const Wrapper = styled.div`
     display: flex;
@@ -134,6 +135,8 @@ class AppPage extends React.Component {
                 <GaugeButton onClick={() => this.onClickGauge()}>
                     Gauge!
                 </GaugeButton>
+
+                <Footer />
 
                 {
                     this.state.modelReady === false
