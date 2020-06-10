@@ -6,6 +6,8 @@ import * as faceApi from 'face-api.js';
 import Spinner from './../ui/Spinner';
 import Footer from './../ui/Footer';
 
+const faceApiUrl = 'https://justadudewhohacks.github.io/face-api.js/docs/index.html';
+
 const Wrapper = styled.div`
     display: flex;
     align-items: center;
@@ -61,6 +63,18 @@ const GaugeButton = styled.button`
     border-radius: 10px;
     margin-left: auto;
     margin-right: auto;
+`;
+
+const MoreAPIsLink = styled.a`
+    margin-top: 23px;
+    font-family: IBM Plex Sans;
+    font-style: normal;
+    font-size: 16px;
+    color: #9B51E0;
+    line-height: 21px;
+    text-align: center;
+    text-decoration: none;
+    letter-spacing: 0.15px;
 `;
 
 class AppPage extends React.Component {
@@ -135,6 +149,12 @@ class AppPage extends React.Component {
                 <GaugeButton onClick={() => this.onClickGauge()}>
                     Gauge!
                 </GaugeButton>
+
+                <MoreAPIsLink target='_blank'
+                              rel='noopener noreferrer'
+                              href={faceApiUrl}>
+                    Get more face APIs
+                </MoreAPIsLink>
 
                 <Footer />
 
