@@ -10,7 +10,7 @@ const Wrapper = styled.div`
     align-items: center;
     flex-direction: column;
     height: 100%;
-    background: #666666;
+    background: #828282;
     
     @media (min-width: 1000px) {
         width: 360px;
@@ -70,7 +70,7 @@ class AppPage extends React.Component {
             imgList: [null, null],
             modelReady: false,
             gauging: false,
-            result: null,
+            similarity: 0,
         };
 
         this.loadModel().then(_ => {
@@ -95,9 +95,8 @@ class AppPage extends React.Component {
         const distance = faceApi.euclideanDistance(descriptors[0],
             descriptors[1]);
 
-        console.log(JSON.stringify(descriptors[0]));
-        this.setState({ result: distance });
-        this.setState({ gauging: false });
+        const similarity = 1 - distance;
+        this.setState({ similarity: similarity, gauging: false });
     };
 
     onChangeImage = (img, index) => {
@@ -125,10 +124,10 @@ class AppPage extends React.Component {
 
                 <GaugeWrapper>
                     <GaugeChart id="gauge-chart1"
-                                percent={0.5}
+                                percent={this.state.similarity}
                                 nrOfLevels={20}
                                 textColor={'#9B51E0'}
-                                colors={['#AAAAAA', '#9B51E0']} />
+                                colors={['#AAAAAA', '#9B51E0']}/>
                 </GaugeWrapper>
 
                 <GaugeButton onClick={() => this.onClickGauge()}>
