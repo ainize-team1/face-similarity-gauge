@@ -10,16 +10,17 @@ const ainizeImagePath = require('../../static/img/ainize.svg');
 const Wrapper = styled.div`
     width: 90%;
     display: flex;
-    justify-content: space-between;
-    position: relative;
-    margin-top: 32px;
-    margin-bottom: 24px;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 97px;
 `;
 
-const Row = styled.div`
+const IconWrapper = styled.div`
     cursor: pointer;
-    margin-left: 10px;
+    font-family: Montserrat;
+    font-style: normal;
     font-size: 0.8rem;
+    color: #8E8E94;
     display: table-cell;
     vertical-align: middle;
 `;
@@ -36,26 +37,26 @@ class Footer extends React.Component {
         this.state = {};
     }
 
+    OnIconClick = (url) => {
+        window.open(url, '_blank');
+        // Comment out when GA ready
+        // window.gtag('event', 'poweredby_click', { 'event_category': 'spotainize_common',
+        //                                           'non_interaction': false, });
+    }
+
     render() {
         return (
             <Wrapper>
-                <Row onClick={() => window.open(githubURL, '_blank')}>
-                    {'Contribute on'}
+                <IconWrapper onClick={() => this.OnIconClick(ainizeURL)}>
+                    <Icon style={{paddingBottom: '3px', paddingRight: '7px'}} src={ainizeImagePath} />
+                    {'Powered by Ainize'}
+                </IconWrapper>
 
-                    <Icon style={{paddingBottom: '2px'}} src={githubImagePath} />
-                </Row>
-                <Row onClick={() => {
-                    window.gtag('event', 'poweredby_click', {
-                        'event_category': 'spotainize_common',
-                        'non_interaction': false,
-                    });
-
-                    window.open(ainizeURL, '_blank');
-                }}>
-                    {'Live on'}
-
-                    <Icon style={{paddingBottom: '3px'}} src={ainizeImagePath} />
-                </Row>
+                <IconWrapper style={{marginTop: '20px'}}
+                             onClick={() => this.OnIconClick(githubURL)}>
+                    <Icon style={{paddingBottom: '3px', paddingRight: '5.5px'}} src={githubImagePath} />
+                    {'Contribute on Github'}
+                </IconWrapper>
             </Wrapper>
         );
     };
