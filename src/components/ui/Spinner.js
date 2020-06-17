@@ -16,7 +16,7 @@ const StyledLoader = styled(Loader)`
 
 const LoadingText = styled.div`
     text-align: center;
-    color: #FFFFFF;
+    color: #9B51E0;
     font-weight: bold;
 `;
 
@@ -31,7 +31,7 @@ class Spinner extends React.Component {
         return (
             <Wrapper>
                 <StyledLoader type='TailSpin'
-                              color='#FFFFFF'
+                              color='#9B51E0'
                               height={80}
                               width={80}/>
 
