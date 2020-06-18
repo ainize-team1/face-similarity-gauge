@@ -88,7 +88,7 @@ class Uploader extends React.Component {
             this.props.updateDescriptor(resizedDetection.descriptor,
                 this.props.index);
         } else {
-            alert(`Can't detect a face! Please try another picture`);
+            alert(`Can't detect a face! Please try another image`);
         }
         this.props.updateStatus(Status.NONE);
     }

@@ -105,7 +105,7 @@ class AppPage extends React.Component {
 
     onClickGauge = async () => {
         if (!this.state.descriptors[0] || !this.state.descriptors[1]) {
-            alert('Upload 2 face images!');
+            alert('Please upload each of two face images!');
             return;
         }
         this.setState({ status: Status.GAUGING });
