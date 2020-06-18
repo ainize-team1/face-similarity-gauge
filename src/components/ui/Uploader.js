@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import * as faceApi from 'face-api.js';
-import {Status} from './../../constant';
+import { Status } from './../../constant';
 
 const Wrapper = styled.div`
     width: 50%;
@@ -52,6 +52,13 @@ const OverlayCanvas = styled.canvas`
     height: 100%;
 `;
 
+const TransparentImageInput = styled.input.attrs({
+    type: 'file',
+    accept: '.jpg, .jpeg, .png'
+})`
+    visibility: hidden;
+`;
+
 class Uploader extends React.Component {
     constructor(props) {
         super(props);
@@ -71,19 +78,17 @@ class Uploader extends React.Component {
             width: wrapper.clientWidth,
             height: wrapper.clientHeight,
         };
-        console.log(JSON.stringify(displaySize));
         faceApi.matchDimensions(canvas, displaySize);
-        const detection = await faceApi.detectSingleFace(image).
-            withFaceLandmarks().
-            withFaceDescriptor();
+        const detection = await faceApi.detectSingleFace(image).withFaceLandmarks().withFaceDescriptor();
         if (detection) {
-            const resizedDetection = faceApi.resizeResults(detection, displaySize);
+            const resizedDetection = faceApi.resizeResults(detection,
+                displaySize);
             faceApi.draw.drawDetections(canvas, resizedDetection);
             faceApi.draw.drawFaceLandmarks(canvas, resizedDetection);
             this.props.updateDescriptor(resizedDetection.descriptor,
                 this.props.index);
         } else {
-            alert(`Can't detect face! Upload face image.`);
+            alert(`Can't detect a face! Please try another picture`);
         }
         this.props.updateStatus(Status.NONE);
     }
@@ -109,19 +114,15 @@ class Uploader extends React.Component {
                     </ImageWrapper>)
                 }
 
-                <input
-                    style={{ visibility: 'hidden' }}
+                <TransparentImageInput
                     ref={fileInput => this.fileInput = fileInput}
-                    type="file"
                     onChange={async (e) => {
                         await this.updateImage(
                             URL.createObjectURL(e.target.files[0]));
-                    }}
-                    accept=".jpg, .jpeg, .png"/>
+                    }}/>
             </Wrapper>
         );
     }
-
 
 }
 

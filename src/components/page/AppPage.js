@@ -5,7 +5,7 @@ import GaugeChart from 'react-gauge-chart';
 import * as faceApi from 'face-api.js';
 import Spinner from './../ui/Spinner';
 import Footer from './../ui/Footer';
-import {Status, StatusMsg} from './../../constant';
+import { Status, StatusMsg } from './../../constant';
 import delay from 'await-delay';
 
 const faceApiUrl = 'https://justadudewhohacks.github.io/face-api.js/docs/index.html';
@@ -118,8 +118,11 @@ class AppPage extends React.Component {
     };
 
     updateDescriptor = (descriptor, index) => {
-        this.state.descriptors[index] = descriptor;
-        this.setState({});
+        this.setState({
+            descriptors: this.state.descriptors.map(
+                (desc, i) => i === index ? descriptor : desc
+            )
+        });
     };
 
     updateStatus = (status) => {
