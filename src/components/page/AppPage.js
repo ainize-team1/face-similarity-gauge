@@ -5,6 +5,8 @@ import GaugeChart from 'react-gauge-chart';
 import * as faceApi from 'face-api.js';
 import Spinner from './../ui/Spinner';
 import Footer from './../ui/Footer';
+import { Status, StatusMsg } from './../../constant';
+import delay from 'await-delay';
 
 const faceApiUrl = 'https://justadudewhohacks.github.io/face-api.js/docs/index.html';
 
@@ -13,7 +15,7 @@ const Wrapper = styled.div`
     align-items: center;
     flex-direction: column;
     height: 100%;
-    background: #828282;
+    background: #FFFFFF;
     
     @media (min-width: 1000px) {
         width: 360px;
@@ -44,7 +46,7 @@ const HelloText = styled.div`
     font-style: normal;
     font-weight: bold;
     font-size: 24px;
-    line-height: 21px;
+    line-height: 31px;
     text-align: center;
     letter-spacing: 0.15px;
 `;
@@ -83,41 +85,48 @@ class AppPage extends React.Component {
         super();
 
         this.state = {
-            imgList: [null, null],
-            modelReady: false,
-            gauging: false,
+            descriptors: [null, null],
+            status: Status.NONE,
             similarity: 0,
         };
+    }
 
-        this.loadModel().then(_ => {
-            this.setState({ modelReady: true });
-        });
+    componentDidMount() {
+        this.loadModel().catch(console.error);
     }
 
     loadModel = async () => {
+        this.setState({ status: Status.LOADING_MODEL });
         await faceApi.loadFaceRecognitionModel('/models');
+        await faceApi.loadSsdMobilenetv1Model('/models');
+        await faceApi.loadFaceLandmarkModel('/models');
+        this.setState({ status: Status.NONE });
     };
 
     onClickGauge = async () => {
-        this.setState({ gauging: true });
-        const inputs = [undefined, undefined];
-        const descriptors = [undefined, undefined];
-
-        for (let i = 0; i < 2; i++) {
-            inputs[i] = await faceApi.fetchImage(this.state.imgList[i]);
-            descriptors[i] = await faceApi.computeFaceDescriptor(inputs[i]);
+        if (!this.state.descriptors[0] || !this.state.descriptors[1]) {
+            alert('Please upload each of two face images!');
+            return;
         }
-
-        const distance = faceApi.euclideanDistance(descriptors[0],
-            descriptors[1]);
-
+        this.setState({ status: Status.GAUGING });
+        console.log(`a:{${this.state.descriptors[0]}}`);
+        console.log(`v:{${this.state.descriptors[1]}}`);
+        const distance = faceApi.euclideanDistance(this.state.descriptors[0], this.state.descriptors[1]);
         const similarity = 1 - distance;
-        this.setState({ similarity: similarity, gauging: false });
+        await delay(2000);
+        this.setState({ status: Status.NONE, similarity: similarity });
     };
 
-    onChangeImage = (img, index) => {
-        this.state.imgList[index] = img;
-        this.setState({});
+    updateDescriptor = (descriptor, index) => {
+        this.setState({
+            descriptors: this.state.descriptors.map(
+                (desc, i) => i === index ? descriptor : desc
+            )
+        });
+    };
+
+    updateStatus = (status) => {
+        this.setState({ status });
     };
 
     render() {
@@ -125,13 +134,13 @@ class AppPage extends React.Component {
             <Wrapper>
                 <UploaderWrapper>
                     <Uploader background='#2D9CDB' emoji='😜‍'
-                              imageIndex={0}
-                              image={this.state.imgList[0]}
-                              onChangeImage={this.onChangeImage}/>
+                              index={0}
+                              updateStatus={this.updateStatus}
+                              updateDescriptor={this.updateDescriptor}/>
                     <Uploader background='#6FCF97' emoji='😜‍'
-                              imageIndex={1}
-                              image={this.state.imgList[1]}
-                              onChangeImage={this.onChangeImage}/>
+                              index={1}
+                              updateStatus={this.updateStatus}
+                              updateDescriptor={this.updateDescriptor}/>
                 </UploaderWrapper>
 
                 <HelloText>
@@ -156,16 +165,12 @@ class AppPage extends React.Component {
                     Get more face APIs
                 </MoreAPIsLink>
 
-                <Footer />
+                <Footer/>
+                {
+                    this.state.status !== Status.NONE
+                    && <Spinner message={StatusMsg[this.state.status]}/>
+                }
 
-                {
-                    this.state.modelReady === false
-                        ? <Spinner message="Models are being loaded..."/> : ''
-                }
-                {
-                    this.state.gauging === true
-                        ? <Spinner message="Gauging..."/> : ''
-                }
             </Wrapper>
         );
     }
