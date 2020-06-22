@@ -39,9 +39,12 @@ class Footer extends React.Component {
 
     OnIconClick = (url) => {
         window.open(url, '_blank');
-        // Comment out when GA ready
-        // window.gtag('event', 'poweredby_click', { 'event_category': 'spotainize_common',
-        //                                           'non_interaction': false, });
+    }
+
+    OnAinizeClick = (url) => {
+        window.open(url, '_blank');
+        window.gtag('event', 'poweredby_click', { 'event_category': 'spotainize_common',
+                                                  'non_interaction': false, });
     }
 
     render() {
