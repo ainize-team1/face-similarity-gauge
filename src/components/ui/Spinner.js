@@ -7,6 +7,9 @@ const Wrapper = styled.div`
     align-items: center;
     flex-direction: column;
     position: fixed;
+    width: 75%;
+    left: 50%;
+    margin-left: -37.5%;
     top: 30%;
 `;
 

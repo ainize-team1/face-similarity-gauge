@@ -8,7 +8,7 @@ const githubImagePath = require('../../static/img/github.svg');
 const ainizeImagePath = require('../../static/img/ainize.svg');
 
 const Wrapper = styled.div`
-    width: 90%;
+    width: 100%;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -27,7 +27,6 @@ const IconWrapper = styled.div`
 
 const Icon = styled.img`
     vertical-align: middle;
-    margin-left: 10px;
 `;
 
 class Footer extends React.Component {
@@ -55,7 +54,7 @@ class Footer extends React.Component {
                     {'Powered by Ainize'}
                 </IconWrapper>
 
-                <IconWrapper style={{marginTop: '20px'}}
+                <IconWrapper style={{marginTop: '20px', marginBottom: '40px'}}
                              onClick={() => this.OnIconClick(githubURL)}>
                     <Icon style={{paddingBottom: '3px', paddingRight: '5.5px'}} src={githubImagePath} />
                     {'Contribute on Github'}
