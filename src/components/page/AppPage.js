@@ -137,7 +137,7 @@ class AppPage extends React.Component {
                               index={0}
                               updateStatus={this.updateStatus}
                               updateDescriptor={this.updateDescriptor}/>
-                    <Uploader background='#6FCF97' emoji='😜‍'
+                    <Uploader background='#6FCF97' emoji='😉'
                               index={1}
                               updateStatus={this.updateStatus}
                               updateDescriptor={this.updateDescriptor}/>
