@@ -6,6 +6,10 @@ import { Status } from './../../constant';
 const Wrapper = styled.div`
     width: 50%;
     height: 242px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: ${props => props.background || '#FFFFFF'};
     background: ${props => props.background || '#FFFFFF'};
     background-position: center;
     background-size: contain;
@@ -13,7 +17,6 @@ const Wrapper = styled.div`
 `;
 
 const Emoji = styled.div`
-    margin-top: 80px;
     text-align: center;
     font-size: 32px;
 `;
@@ -57,6 +60,7 @@ const TransparentImageInput = styled.input.attrs({
     accept: '.jpg, .jpeg, .png'
 })`
     visibility: hidden;
+    position: fixed;
 `;
 
 class Uploader extends React.Component {
