@@ -87,11 +87,10 @@ class Uploader extends React.Component {
         if (detection) {
             const resizedDetection = faceApi.resizeResults(detection,
                 displaySize);
-            faceApi.draw.drawDetections(canvas, resizedDetection);
-            faceApi.draw.drawFaceLandmarks(canvas, resizedDetection);
             this.props.updateDescriptor(resizedDetection.descriptor,
                 this.props.index);
         } else {
+            this.setState({ imgUrl: null });
             alert(`Can't detect a face! Please try another image`);
         }
         this.props.updateStatus(Status.NONE);
