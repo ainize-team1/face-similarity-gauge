@@ -68,6 +68,8 @@ const GaugeButton = styled.button`
 `;
 
 const MoreApisLinkWrapper = styled.div`
+    outline: none;
+    outline-offset: none;
     margin-top: 28px;
     text-align: center;
     letter-spacing: 0.15px;
@@ -142,7 +144,7 @@ class AppPage extends React.Component {
                               index={0}
                               updateStatus={this.updateStatus}
                               updateDescriptor={this.updateDescriptor}/>
-                    <Uploader background='#6FCF97' emoji='😜‍'
+                    <Uploader background='#6FCF97' emoji='😉'
                               index={1}
                               updateStatus={this.updateStatus}
                               updateDescriptor={this.updateDescriptor}/>
