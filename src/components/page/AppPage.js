@@ -63,6 +63,8 @@ const GaugeButton = styled.button`
     border: 0;
     background: #9B51E0;
     border-radius: 10px;
+    outline: none;
+    outline-offset: none;
     margin-top: 28px;
     margin-left: auto;
     margin-right: auto;
