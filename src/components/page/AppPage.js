@@ -116,7 +116,7 @@ class AppPage extends React.Component {
 
     onClickReset = () => {
         similarity = 0;
-        this.setState({ reset: this.state.reset + 1 });
+        this.setState({ reset: this.state.reset + 1, descriptors: [null, null] });
     };
 
     updateDescriptor = (descriptor, index) => {
@@ -128,8 +128,6 @@ class AppPage extends React.Component {
         if (this.state.descriptors[0] && this.state.descriptors[1]) {
             const distance = faceApi.euclideanDistance(this.state.descriptors[0], this.state.descriptors[1]);
             similarity = 1 - distance;
-            const similarity = 1 - distance;
-            this.setState({ similarity: similarity });
         }
     };
 
