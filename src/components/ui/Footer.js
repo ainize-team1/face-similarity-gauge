@@ -11,8 +11,10 @@ const Wrapper = styled.div`
     width: 100%;
     display: flex;
     align-items: center;
-    flex-direction: column;
-    margin-top: 97px;
+    justify-content: center;
+    flex-direction: row;
+    margin-top: 160px;
+    margin-bottom: 17px;
 `;
 
 const IconWrapper = styled.div`
@@ -54,7 +56,7 @@ class Footer extends React.Component {
                     {'Powered by Ainize'}
                 </IconWrapper>
 
-                <IconWrapper style={{marginTop: '20px', marginBottom: '40px'}}
+                <IconWrapper style={{marginLeft: '34px'}}
                              onClick={() => this.OnIconClick(githubURL)}>
                     <Icon style={{paddingBottom: '3px', paddingRight: '5.5px'}} src={githubImagePath} />
                     {'Contribute on Github'}
