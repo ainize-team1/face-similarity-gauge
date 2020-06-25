@@ -89,6 +89,8 @@ const MoreAPIsLink = styled.a`
     letter-spacing: 0.15px;
 `;
 
+let similarity = 0;
+
 class AppPage extends React.Component {
     constructor() {
         super();
@@ -96,7 +98,6 @@ class AppPage extends React.Component {
         this.state = {
             descriptors: [null, null],
             status: Status.NONE,
-            similarity: 0,
             reset: 0,
         };
     }
@@ -114,7 +115,8 @@ class AppPage extends React.Component {
     };
 
     onClickReset = () => {
-        this.setState({ reset: this.state.reset + 1, similarity: 0 });
+        similarity = 0;
+        this.setState({ reset: this.state.reset + 1 });
     };
 
     updateDescriptor = (descriptor, index) => {
@@ -125,6 +127,7 @@ class AppPage extends React.Component {
         });
         if (this.state.descriptors[0] && this.state.descriptors[1]) {
             const distance = faceApi.euclideanDistance(this.state.descriptors[0], this.state.descriptors[1]);
+            similarity = 1 - distance;
             const similarity = 1 - distance;
             this.setState({ similarity: similarity });
         }
@@ -155,8 +158,9 @@ class AppPage extends React.Component {
                 </HelloText>
 
                 <GaugeWrapper>
-                    <GaugeChart id="gauge-chart1"
-                                percent={this.state.similarity}
+                    <GaugeChart id={"gauge-chart1"}
+                                key={similarity}
+                                percent={similarity}
                                 nrOfLevels={20}
                                 textColor={'#9B51E0'}
                                 colors={['#AAAAAA', '#9B51E0']}/>
