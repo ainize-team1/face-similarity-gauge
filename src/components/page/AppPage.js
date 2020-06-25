@@ -124,7 +124,7 @@ class AppPage extends React.Component {
         const distance = faceApi.euclideanDistance(this.state.descriptors[0], this.state.descriptors[1]);
         similarity = 1 - distance;
         await delay(2000);
-        this.setState({ status: Status.NONE});
+        this.setState({ status: Status.NONE });
     };
 
     updateDescriptor = (descriptor, index) => {
