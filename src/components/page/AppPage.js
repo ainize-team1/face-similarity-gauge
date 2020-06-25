@@ -52,7 +52,7 @@ const GaugeButtonWrapper = styled.div`
     align-items: center;
 `;
 
-const GaugeButton = styled.button`
+const ResetButton = styled.button`
     margin-top: 32px;
     font-style: normal;
     font-weight: bold;
@@ -97,6 +97,7 @@ class AppPage extends React.Component {
             descriptors: [null, null],
             status: Status.NONE,
             similarity: 0,
+            reset: 0,
         };
     }
 
@@ -112,18 +113,8 @@ class AppPage extends React.Component {
         this.setState({ status: Status.NONE });
     };
 
-    onClickGauge = async () => {
-        if (!this.state.descriptors[0] || !this.state.descriptors[1]) {
-            alert('Please upload each of two face images!');
-            return;
-        }
-        this.setState({ status: Status.GAUGING });
-        console.log(`a:{${this.state.descriptors[0]}}`);
-        console.log(`v:{${this.state.descriptors[1]}}`);
-        const distance = faceApi.euclideanDistance(this.state.descriptors[0], this.state.descriptors[1]);
-        const similarity = 1 - distance;
-        await delay(2000);
-        this.setState({ status: Status.NONE, similarity: similarity });
+    onClickReset = () => {
+        this.setState({ reset: this.state.reset + 1, similarity: 0 });
     };
 
     updateDescriptor = (descriptor, index) => {
@@ -132,6 +123,11 @@ class AppPage extends React.Component {
                 (desc, i) => i === index ? descriptor : desc
             )
         });
+        if (this.state.descriptors[0] && this.state.descriptors[1]) {
+            const distance = faceApi.euclideanDistance(this.state.descriptors[0], this.state.descriptors[1]);
+            const similarity = 1 - distance;
+            this.setState({ similarity: similarity });
+        }
     };
 
     updateStatus = (status) => {
@@ -144,10 +140,12 @@ class AppPage extends React.Component {
                 <UploaderWrapper>
                     <Uploader background='#2D9CDB' emoji='😜‍'
                               index={0}
+                              reset={this.state.reset}
                               updateStatus={this.updateStatus}
                               updateDescriptor={this.updateDescriptor}/>
                     <Uploader background='#6FCF97' emoji='😉'
                               index={1}
+                              reset={this.state.reset}
                               updateStatus={this.updateStatus}
                               updateDescriptor={this.updateDescriptor}/>
                 </UploaderWrapper>
@@ -164,9 +162,9 @@ class AppPage extends React.Component {
                                 colors={['#AAAAAA', '#9B51E0']}/>
                 </GaugeWrapper>
                 <GaugeButtonWrapper>
-                    <GaugeButton onClick={() => this.onClickGauge()}>
-                        Gauge!
-                    </GaugeButton>
+                    <ResetButton onClick={() => this.onClickReset()}>
+                        Reset!
+                    </ResetButton>
 
                 </GaugeButtonWrapper>
 
