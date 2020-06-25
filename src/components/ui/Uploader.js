@@ -68,6 +68,7 @@ class Uploader extends React.Component {
         super(props);
 
         this.state = {
+            reset: -1,
             imgUrl: null,
         };
     }
@@ -96,7 +97,16 @@ class Uploader extends React.Component {
         this.props.updateStatus(Status.NONE);
     }
 
-    triggerInputFile = () => this.fileInput.click();
+    triggerInputFile = () => {
+        document.getElementById(`${'input' + this.props.index}`).value = '';
+        this.fileInput.click();
+    };
+
+    componentWillReceiveProps(props) {
+        if (props.reset > this.state.reset){
+            this.setState({ imgUrl: null, reset: props.reset})
+        }
+    }
 
     render() {
         return (
@@ -118,7 +128,10 @@ class Uploader extends React.Component {
                 }
 
                 <TransparentImageInput
-                    ref={fileInput => this.fileInput = fileInput}
+                    id={'input' + this.props.index}
+                    ref={fileInput => {
+                        this.fileInput = fileInput;
+                    }}
                     onChange={async (e) => {
                         await this.updateImage(
                             URL.createObjectURL(e.target.files[0]));
