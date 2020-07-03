@@ -21,6 +21,7 @@ const globalNavigationBar = (
             {/* Content */}
             <Switch>
                 <Route exact path='/' component={AppPage} />
+                <Route exact path='/healthz' component={() => { return (<div>OK</div>); }} />
             </Switch>
         </Router>
     </Wrapper>

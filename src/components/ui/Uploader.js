@@ -1,14 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
+import * as faceApi from 'face-api.js';
+import { Status } from './../../constant';
 
 const Wrapper = styled.div`
     width: 50%;
     height: 242px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background: ${props => props.background || '#FFFFFF'};
+    background: ${props => props.background || '#FFFFFF'};
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
 `;
 
 const Emoji = styled.div`
-    margin-top: 80px;
     text-align: center;
     font-size: 32px;
 `;
@@ -25,22 +33,109 @@ const Description = styled.div`
     color: #FFFFFF;
 `;
 
+const ImageWrapper = styled.div`
+    position: relative;
+    width: 100%;
+    height: 100%;
+`;
+
+const TargetImage = styled.img`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+`;
+
+const OverlayCanvas = styled.canvas`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+`;
+
+const TransparentImageInput = styled.input.attrs({
+    type: 'file',
+    accept: '.jpg, .jpeg, .png'
+})`
+    visibility: hidden;
+    position: fixed;
+`;
+
 class Uploader extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {};
+        this.state = {
+            reset: -1,
+            imgUrl: null,
+        };
+    }
+
+    async updateImage(imgUrl) {
+        this.props.updateStatus(Status.LOADING_IMAGE);
+        this.setState({ imgUrl: imgUrl });
+        const image = await faceApi.fetchImage(imgUrl);
+        const wrapper = document.getElementById('imageWrapper');
+        const canvas = document.getElementById('overlay' + this.props.index);
+        const displaySize = {
+            width: wrapper.clientWidth,
+            height: wrapper.clientHeight,
+        };
+        faceApi.matchDimensions(canvas, displaySize);
+        const detection = await faceApi.detectSingleFace(image).withFaceLandmarks().withFaceDescriptor();
+        if (detection) {
+            const resizedDetection = faceApi.resizeResults(detection,
+                displaySize);
+            this.props.updateDescriptor(resizedDetection.descriptor,
+                this.props.index);
+        } else {
+            this.setState({ imgUrl: null });
+            alert(`Can't detect a face! Please try another image`);
+        }
+        this.props.updateStatus(Status.NONE);
+    }
+
+    triggerInputFile = () => {
+        document.getElementById(`${'input' + this.props.index}`).value = '';
+        this.fileInput.click();
+    };
+
+    componentWillReceiveProps(props) {
+        if (props.reset > this.state.reset){
+            this.setState({ imgUrl: null, reset: props.reset})
+        }
     }
 
     render() {
         return (
-            <Wrapper background={this.props.background}>
-                <Emoji>
-                    {this.props.emoji}
-                </Emoji>
-                <Description>
-                    Upload
-                </Description>
+            <Wrapper onClick={this.triggerInputFile}
+                     background={this.props.background}>
+                {this.state.imgUrl === null ?
+                    (<div>
+                        <Emoji>
+                            {this.props.emoji}
+                        </Emoji>
+                        <Description>
+                            Upload
+                        </Description>
+                    </div>) :
+                    (<ImageWrapper id="imageWrapper">
+                        <TargetImage src={this.state.imgUrl}/>
+                        <OverlayCanvas id={'overlay' + this.props.index}/>
+                    </ImageWrapper>)
+                }
+
+                <TransparentImageInput
+                    id={'input' + this.props.index}
+                    ref={fileInput => {
+                        this.fileInput = fileInput;
+                    }}
+                    onChange={async (e) => {
+                        await this.updateImage(
+                            URL.createObjectURL(e.target.files[0]));
+                    }}/>
             </Wrapper>
         );
     }
